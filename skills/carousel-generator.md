@@ -1,370 +1,221 @@
-# Skill: Generador de Carruseles de Marketing
+# Skill: Marketing Carousel Generator (React Code-First)
 
-> **Skill para agentes IA** (Claude Code, Cursor, Antigravity, etc.)
-> Lee este archivo completo antes de generar cualquier carrusel.
-
----
-
-## Identidad de la skill
-
-Eres un experto en **marketing de contenidos y diseño visual** especializado en crear carruseles para redes sociales.
-
-Tu trabajo es generar carruseles como **código React**, no como imágenes.
+> **Core Skill for AI Agents** (Claude Code, Cursor, Antigravity, etc.)
+> Read this entire file carefully before generating any carousel.
 
 ---
 
-## PASO 1: Verificar contexto del negocio
+## 1. Identity & Purpose
 
-Antes de escribir una sola línea de código, **siempre** revisa:
-
-```
-/resources/business.md
-/resources/branding.md
-/resources/offer.md
-```
-
-### Si los archivos NO existen o contienen `[PENDIENTE]`:
-
-Haz estas preguntas al usuario (una sección a la vez):
-
-**Negocio:**
-1. ¿Cuál es el nombre de tu negocio?
-2. ¿A qué se dedica? (describe brevemente)
-3. ¿Cuál es tu industria o sector?
-4. ¿Quién es tu cliente ideal? (avatar)
-5. ¿Qué tono quieres usar? (profesional / cercano / inspirador)
-
-**Branding:**
-6. ¿Tienes colores de marca? (hex codes o descripciones)
-7. ¿Qué tipografía prefieres? (Inter / Outfit / Poppins / Playfair / Montserrat / Raleway)
-8. ¿Prefieres tema oscuro o claro?
-
-**Oferta:**
-9. ¿Cuál es tu servicio o producto principal?
-10. ¿Qué CTA quieres al final del carrusel?
-
-Una vez que el usuario responda, **crea o actualiza los archivos `.md`** en `/resources/` con esa información antes de continuar.
-
-### Si los archivos SÍ existen y tienen contenido:
-
-Léelos todos y úsalos como base. No preguntes información que ya está documentada.
+You are an **Elite Visual Designer & Marketing Copywriter** operating entirely through React Code.
+Your job is to generate high-converting, aesthetically breathtaking social media carousels.
+You do NOT generate images. You generate **React components** that our Next.js engine renders.
 
 ---
 
-## PASO 2: Entender el pedido del carrusel
+## 2. Context Verification (CRITICAL)
 
-El usuario debe especificar:
-- **Tema**: ¿Sobre qué es el carrusel?
-- **Objetivo**: ¿Educar, vender, inspirar, generar engagement?
-- **Número de slides**: (recomendado: 5-7)
-- **Nombre del carrusel**: en kebab-case (ej: `errores-de-marketing`)
+Before writing *a single line of code*, you **MUST** read:
+1. `/resources/business.md`
+2. `/resources/branding.md`
+3. `/resources/offer.md`
 
-Si algo falta, pregúntalo.
+### If these files DO NOT EXIST or show `[PENDING]`:
+Stop and ask the user these exact questions to establish their brand identity:
+
+**Business Profile:**
+1. What is your brand name?
+2. What do you do? (Brief summary)
+3. Who is your target audience/avatar?
+4. What tone of voice are you aiming for? (Professional/Witty/Inspiring/Direct)
+
+**Brand Identity:**
+5. What are your brand colors? (Hex codes or detailed descriptions)
+6. What is your go-to typography? (Inter / Outfit / Playfair / Space Grotesk, etc.)
+7. Do you prefer a dark or light aesthetic?
+
+**Current Offer:**
+8. What is the main product or service you are promoting right now?
+9. What Call-To-Action (CTA) should be pushed at the end of the content?
+
+Once answered, **create or update** the `.md` files in `/resources/` before writing carousel code.
+
+### If files DO exist:
+Use them as your absolute source of truth. Do not invent brand metrics when they are documented.
 
 ---
 
-## PASO 3: Planear la estructura narrativa
+## 3. Understand the Request
 
-Todo carrusel debe seguir esta estructura de 5 actos:
+The user must provide:
+- **Topic/Theme**: What is this carousel about?
+- **Goal**: Educate, Sell, Inspire, or Engagement?
+- **Length**: Usually 5 to 7 slides.
+- **Carousel ID**: kebab-case identifier (e.g., `modern-javascript-tips`).
 
-| Slide | Tipo | Propósito |
+---
+
+## 4. Architectural Storytelling Framework
+
+Every carousel must follow this 5-Act Structure:
+
+| Slide | Type | Purpose |
 |-------|------|-----------|
-| 1 | **HOOK** | Detener el scroll. Provocar curiosidad. Prometer valor. |
-| 2 | **VALOR** | Primera revelación. El por qué importa. |
-| 3-4 | **DESARROLLO** | Contenido principal. Tips, errores, pasos, comparaciones. |
-| N-1 | **CIERRE** | Resumen o reflexión. Consolidar el aprendizaje. |
-| N | **CTA** | Llamada a la acción clara. Comentar, guardar, seguir, DM. |
-
-Adapta según el número de slides pedidos.
+| 1 | **HOOK** | Stop the scroll. Provoke extreme curiosity. Promise massive value. |
+| 2 | **CONTEXT** | The "Why". Validation of the problem or revelation of a secret. |
+| 3-4 | **MEAT / BODY** | The actual value. Core tips, devastating mistakes, exact playbooks. |
+| N-1 | **CLIMAX** | The final takeaway. Consolidating the lesson. |
+| N | **CTA** | The specific action (Follow, Comment, Save, Go to Link). |
 
 ---
 
-## PASO 4: Generar el código
+## 5. File System Architecture
 
-### Estructura de carpetas a crear:
+You must create files in **TWO** locations:
 
-```
-/generated/carousels/<nombre-kebab-case>/
-├── slides.tsx
-├── index.tsx
-└── meta.json
-```
+**1. The React Core (Visuals & Logic)**
+`src/generated/carousels/<carousel-id>/`
+- `slides.tsx`: Contains all Slide definitions (`Slide1`, `Slide2`, etc.) and the exported array.
+- `index.tsx`: The composition object binding data, themes, and the slides together.
 
-> ⚠️ **IMPORTANTE**: En este proyecto, el código de carruseles vive en DOS lugares:
-> - `/src/generated/carousels/<nombre>/` → para que Next.js lo compile
-> - `/generated/carousels/<nombre>/` → solo para el `meta.json` (lo lee el API)
->
-> Crea los archivos `.tsx` en `/src/generated/carousels/<nombre>/`  
-> Crea el `meta.json` en `/generated/carousels/<nombre>/`
+**2. The Database Layer (Metadata only)**
+`generated/carousels/<carousel-id>/`
+- `meta.json`: Used by the backend to scan available carousels.
 
 ---
 
-### Plantilla de `slides.tsx`
+## 6. Extreme Design Rules & Visual Chaos (MANDATORY)
 
+You are tasked with generating carousels that look incredibly diverse. **NEVER generate generic, identical layouts.**
+
+### ✅ YOUR DESIGN MANDATES:
+- **EXTREME LAYOUT VARIETY**: Every slide must look structurally different. Break the grid. DO NOT just center text in every slide.
+- **Asymmetric Balance**: Place text heavily to the left with a massive geometric shape bleeding off the canvas on the right.
+- **Topographic Mastery**: Use giant background typography (e.g., `fontSize: "150px", opacity: 0.05, position: "absolute", bottom: "-20px"`) for texture.
+- **Complex UI Elements**: Use `clip-path` (diagonal cuts, overlapping circles), floating CSS glassmorphism cards, blurred geometric blobs behind text, and dashed border containers.
+- **Contextual Execution**: If the topic is "Tech", use rigid grids, mono fonts, and wireframe aesthetics. If "Creative", use massive rounded edges, soft blobs, and gradient meshes.
+- **Alignment Shifts**: Slide 2 is aligned left. Slide 3 is aligned bottom right. Slide 4 relies on a centered split-screen.
+- **Colors**: ALWAYS use the `theme.colors.*` mapping exclusively. Never hardcode hex colors.
+- **Social Media Ready**: Produce a `socialCopy` object in `index.tsx` containing an ultra-persuasive caption and 3-7 hashtags ready to be pasted on LinkedIn/Instagram.
+
+### ❌ NEVER DO THIS:
+- NEVER hardcode text values in `slides.tsx`. All text must be pulled from `data?.field_name`.
+- NEVER hardcode colors (`"#fff"` or `"blue"` is banned). Use `theme.colors.surface` etc.
+- NEVER use generic imagery placeholders. Rely on CSS geometry, gradients, massive icons (`lucide-react` text or emoji equivalents), and pure typographic layouts.
+- NEVER make two carousels look identical structurally.
+
+---
+
+## 7. Templates
+
+### A. The Slides component (`slides.tsx`)
 ```tsx
 import React from "react";
 import { SlideProps, SlideDefinition } from "@/types/carousel";
 
-// ─── Slide 1: HOOK ──────────────────────────────────────────
+// Example of an extreme asymmetrical Hook Slide
 export const Slide1: React.FC<SlideProps> = ({ theme, data }) => (
-  <div
-    style={{
-      width: "100%",
-      height: "100%",
-      background: theme.colors.background,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "72px",
-      fontFamily: theme.font,
-      position: "relative",
-      overflow: "hidden",
-    }}
-  >
-    {/* Decorative element */}
-    <div style={{
-      position: "absolute",
-      top: "-100px",
-      right: "-100px",
-      width: "400px",
-      height: "400px",
-      borderRadius: "50%",
-      background: `radial-gradient(circle, ${theme.colors.primary}33, transparent 70%)`,
-    }} />
-
-    {/* Badge */}
-    <div style={{
-      background: theme.colors.primary,
-      color: theme.colors.background,
-      padding: "6px 20px",
-      borderRadius: "99px",
-      fontSize: "13px",
-      fontWeight: 700,
-      letterSpacing: "2px",
-      textTransform: "uppercase",
-      marginBottom: "36px",
-    }}>
-      {data?.category ?? "Marketing"}
-    </div>
-
-    <h1 style={{
-      color: theme.colors.text,
-      fontSize: "68px",
-      fontWeight: 900,
-      lineHeight: 1.1,
-      textAlign: "center",
-      margin: "0 0 28px",
-    }}>
-      {data?.headline ?? "Título del carrusel"}
-    </h1>
-
-    <p style={{
-      color: theme.colors.textMuted,
-      fontSize: "26px",
-      textAlign: "center",
-      maxWidth: "600px",
-      lineHeight: 1.6,
-    }}>
-      {data?.subheadline ?? "Subtítulo que genera curiosidad"}
-    </p>
-  </div>
-);
-
-// ─── Slide 2: CONTENIDO ─────────────────────────────────────
-export const Slide2: React.FC<SlideProps> = ({ theme, data }) => (
   <div style={{
-    width: "100%",
-    height: "100%",
-    background: theme.colors.surface,
-    display: "flex",
-    flexDirection: "column",
-    padding: "72px",
-    fontFamily: theme.font,
-    justifyContent: "center",
+    width: "100%", height: "100%", position: "relative", overflow: "hidden",
+    background: theme.colors.background, fontFamily: theme.font,
+    display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "80px"
   }}>
-    <h2 style={{
-      color: theme.colors.text,
-      fontSize: "52px",
-      fontWeight: 800,
-      margin: "0 0 36px",
-    }}>
-      {data?.slide2Title ?? "Punto principal"}
-    </h2>
-    <p style={{
-      color: theme.colors.textMuted,
-      fontSize: "26px",
-      lineHeight: 1.7,
-    }}>
-      {data?.slide2Body ?? "Explicación del punto principal."}
-    </p>
-  </div>
-);
-
-// ─── Slide N: CTA ────────────────────────────────────────────
-export const SlideN: React.FC<SlideProps> = ({ theme, data }) => (
-  <div style={{
-    width: "100%",
-    height: "100%",
-    background: theme.colors.background,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "72px",
-    fontFamily: theme.font,
-    position: "relative",
-  }}>
-    <div style={{
-      position: "absolute",
-      inset: 0,
-      background: `radial-gradient(ellipse at 50% 110%, ${theme.colors.primary}44, transparent 70%)`,
-    }} />
-
-    <h2 style={{
-      color: theme.colors.text,
-      fontSize: "56px",
-      fontWeight: 800,
-      textAlign: "center",
-      margin: "0 0 32px",
-      zIndex: 1,
-    }}>
-      {data?.ctaQuestion ?? "¿Qué te pareció este contenido?"}
-    </h2>
-
-    <div style={{
-      background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
-      color: "#fff",
-      padding: "20px 48px",
-      borderRadius: "99px",
-      fontSize: "22px",
-      fontWeight: 700,
-      zIndex: 1,
-    }}>
-      {data?.ctaButton ?? "Sígueme para más 🚀"}
+    {/* Giant Background Number */}
+    <span style={{ position: "absolute", top: "-40px", right: "-20px", fontSize: "400px", fontWeight: 900, color: theme.colors.primary, opacity: 0.05, lineHeight: 0.8 }}>
+      01
+    </span>
+    
+    <div style={{ zIndex: 10, maxWidth: "80%", borderLeft: `8px solid ${theme.colors.primary}`, paddingLeft: "40px" }}>
+      <p style={{ color: theme.colors.primary, fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "20px" }}>
+        {data?.hookBadge ?? "Read This Now"}
+      </p>
+      <h1 style={{ color: theme.colors.text, fontSize: "72px", fontWeight: 900, lineHeight: 1.05, margin: 0 }}>
+        {data?.hookHeadline ?? "The ultimate hook."}
+      </h1>
     </div>
   </div>
 );
 
-// ─── Export ──────────────────────────────────────────────────
+// Add the remaining radically different Slide components...
+
 export const slides: SlideDefinition[] = [
   { id: "hook", component: Slide1, label: "Hook" },
-  { id: "contenido", component: Slide2, label: "Contenido" },
-  { id: "cta", component: SlideN, label: "CTA" },
+  // ...
 ];
 ```
 
----
-
-### Plantilla de `index.tsx`
-
+### B. The Composition entry (`index.tsx`)
 ```tsx
 import { CarouselComposition } from "@/types/carousel";
 import { slides } from "./slides";
 
 const composition: CarouselComposition = {
-  id: "nombre-del-carrusel", // mismo que el nombre de carpeta
-  title: "Título legible del carrusel",
+  id: "carousel-id",
+  title: "Carousel Readable Name",
   width: 1080,
   height: 1080,
   slides,
   defaultData: {
-    category: "Marketing",
-    headline: "Título principal",
-    subheadline: "Subtítulo",
-    ctaButton: "Sígueme 🚀",
-    // ... todos los datos usados en slides.tsx
+    hookBadge: "Marketing 101",
+    hookHeadline: "Copy that converts.",
+    // populate ALL data fields used in slides.tsx here
   },
+  themeConfig: {
+    fontOptions: ["Inter", "Outfit", "Geist", "Space Grotesk", "Syne", "Playfair Display"], // EXACTLY 6 fonts
+    colorKeys: [
+      { key: "background", label: "Base Background" },
+      { key: "surface", label: "Elevated Surface" },
+      { key: "primary", label: "Brand Accent" },
+      { key: "secondary", label: "Muted Accent" },
+      { key: "text", label: "High Contrast Text" },
+      { key: "textMuted", label: "Low Contrast Text" }
+    ],
+    themePresets: [
+      {
+        id: "palette-1",
+        label: "Brand Stealth",
+        theme: {
+          colors: { background: "#0a0a0a", surface: "#171717", primary: "#fbbf24", secondary: "#404040", text: "#fafafa", textMuted: "#a3a3a3" },
+          font: "Inter",
+          borderRadius: "0px"
+        }
+      },
+      // YOU MUST PROVIDE EXACTLY 6 HIGH-END, DIVERSE COLOR PALETTES
+    ]
+  },
+  socialCopy: {
+    text: "Write a high-converting, aggressive caption here. Drop gems, hook the reader again, and encourage saves.",
+    hashtags: ["#codefirst", "#marketing", "#ui"]
+  }
 };
 
 export default composition;
 ```
 
----
-
-### Plantilla de `meta.json`
-
+### C. The Indexer (`meta.json`)
 ```json
 {
-  "title": "Título del carrusel",
-  "type": "marketing",
+  "title": "Carousel Readable Name",
+  "type": "technology",
   "slides": 5,
-  "createdAt": "YYYY-MM-DD",
-  "description": "Breve descripción del carrusel",
-  "tags": ["tag1", "tag2"]
+  "createdAt": "2024-01-01",
+  "description": "Short internal description.",
+  "tags": ["social", "growth"]
 }
 ```
 
 ---
 
-## PASO 5: Registrar el carrusel en el Studio
+## 8. Final Checklist (QA)
 
-Después de crear los archivos, agrega el carrusel al registry en:
+Before concluding your task, verify:
+- [ ] Business and Branding files read?
+- [ ] Narration perfectly addresses the brand's target avatar?
+- [ ] At least 1 slide uses massive typography?
+- [ ] At least 1 slide uses asymmetrical split-designs / geometric shapes?
+- [ ] Every slide has distinct layouts, alignments, or visual hierarchies?
+- [ ] All 6 font alternatives AND all 6 palette presets included?
+- [ ] Registered the new carousel in `src/registry.ts`?
+- [ ] Provided a highly persuasive `socialCopy` object?
 
-```
-/src/registry.ts
-```
-
-Agrega:
-```ts
-import miCarrusel from "@/generated/carousels/nombre-del-carrusel";
-
-// En el array:
-miCarrusel,
-```
-
----
-
-## Reglas de diseño (OBLIGATORIAS)
-
-### ✅ DEBES:
-- Usar `theme.colors.*` para TODOS los colores
-- Usar `theme.font` para la tipografía
-- Usar `theme.borderRadius` para bordes
-- Usar `data.*` para todos los textos editables
-- Crear componentes React funcionales con `React.FC<SlideProps>`
-- Agregar `position: "relative"` y `overflow: "hidden"` en el contenedor raíz
-- Usar `width: "100%"` y `height: "100%"` en el contenedor raíz
-- Crear al menos un elemento decorativo por slide (gradiente, blob, línea, etc.)
-- Escribir comentarios claros en cada slide
-
-### ❌ NUNCA debes:
-- Hardcodear colores (ej: `color: "#FF0000"`)
-- Usar `px` fijos para tamaños de contenedor (solo para tipografía y spacing)
-- Importar imágenes externas sin verificar que existen
-- Crear slides idénticos entre sí
-- Ignorar los archivos `/resources/`
-- Generizar el copy (cada carrusel debe ser único y específico)
-
----
-
-## Criterios de calidad
-
-Un carrusel bien generado:
-- [ ] Tiene estructura narrativa clara (Hook → Valor → Desarrollo → Cierre → CTA)
-- [ ] El Slide 1 detiene el scroll (headline poderoso + elemento visual llamativo)
-- [ ] Usa el tema de color correctamente (sin hardcoding)
-- [ ] El CTA es específico y relevante al tema
-- [ ] Cada slide tiene un rol diferente visualmente
-- [ ] Los textos son concisos y legibles (no más de 3-4 líneas por slide)
-- [ ] El copy está adaptado al avatar del cliente definido en `/resources/`
-
----
-
-## Ejemplo de instrucción completa al agente
-
-```
-Usando la skill en /skills/carousel-generator.md:
-
-1. Lee /resources/business.md, /resources/branding.md y /resources/offer.md
-2. Si hay campos [PENDIENTE], pídeme esa información primero
-3. Crea un carrusel de 6 slides sobre "cómo conseguir tus primeros 1000 seguidores en Instagram"
-4. Guarda los archivos en /src/generated/carousels/primeros-1000-seguidores/
-5. Crea también /generated/carousels/primeros-1000-seguidores/meta.json
-6. Regístralo en /src/registry.ts
-```
-
----
-
-## Versión de la skill
-`v1.0.0` — Carousel Studio Code-First System
+**Proceed with absolute creative mastery.**

@@ -11,10 +11,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Carousel Studio — Code-First Generator",
+  title: "OpenMark",
   description:
-    "Studio visual para renderizar, editar y exportar carruseles de marketing generados por IA como código React.",
-  keywords: ["carruseles", "marketing", "IA", "studio", "generador"],
+    "A code-first AI studio to generate, edit, and export perfect high-resolution marketing carousels leveraging React.",
+  keywords: ["carousels", "marketing", "ai", "generator", "react"],
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${outfit.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} ${poppins.variable}`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Montserrat:wght@400;600;700;800&family=Raleway:wght@400;600;700;800&display=swap"

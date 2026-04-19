@@ -3,38 +3,65 @@
 import React from "react";
 import { CarouselComposition } from "@/types/carousel";
 import { Theme } from "@/types/carousel";
-import { Layers, ChevronRight } from "lucide-react";
+import { Layers, ChevronRight, Trash2 } from "lucide-react";
 
 interface CarouselListProps {
   compositions: CarouselComposition[];
   selectedId: string | null;
-  theme: Theme;
+  uiTheme: Theme;
   onSelect: (id: string) => void;
 }
 
 export default function CarouselList({
   compositions,
   selectedId,
-  theme,
+  uiTheme,
   onSelect,
 }: CarouselListProps) {
+  const [confirmDeleteId, setConfirmDeleteId] = React.useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = React.useState(false);
+
+  const handleDeleteClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setConfirmDeleteId(id);
+  };
+
+  const executeDelete = async () => {
+    if (!confirmDeleteId) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/carousels/${confirmDeleteId}`, { method: "DELETE" });
+      if (res.ok) {
+        window.location.reload();
+      } else {
+        alert("There was an error trying to delete the carousel.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("There was a connection error.");
+    } finally {
+      setIsDeleting(false);
+      setConfirmDeleteId(null);
+    }
+  };
   return (
-    <aside className="flex flex-col h-full" style={{ fontFamily: theme.font }}>
+    <>
+      <aside className="flex flex-col h-full" style={{ fontFamily: uiTheme.font }}>
       {/* Header */}
       <div
         className="px-5 py-4 flex items-center gap-3"
-        style={{ borderBottom: `1px solid ${theme.colors.surface}` }}
+        style={{ borderBottom: `1px solid ${uiTheme.colors.surface}` }}
       >
         <Layers
           size={20}
-          style={{ color: theme.colors.primary }}
+          style={{ color: uiTheme.colors.primary }}
           className="shrink-0"
         />
         <span
           className="text-sm font-bold tracking-widest uppercase"
-          style={{ color: theme.colors.textMuted }}
+          style={{ color: uiTheme.colors.textMuted }}
         >
-          Carruseles
+          Carousels
         </span>
       </div>
 
@@ -42,89 +69,123 @@ export default function CarouselList({
       <div className="flex-1 overflow-y-auto py-3">
         {compositions.length === 0 ? (
           <div className="px-5 py-8 text-center">
-            <p className="text-sm" style={{ color: theme.colors.textMuted }}>
-              No hay carruseles generados.
+            <p className="text-sm" style={{ color: uiTheme.colors.textMuted }}>
+              No carousels generated.
             </p>
-            <p className="text-xs mt-2" style={{ color: theme.colors.textMuted }}>
-              Usa la skill para crear uno.
+            <p className="text-xs mt-2" style={{ color: uiTheme.colors.textMuted }}>
+              Use the skill to create one.
             </p>
           </div>
         ) : (
           compositions.map((comp) => {
             const isSelected = comp.id === selectedId;
             return (
-              <button
+              <div
                 key={comp.id}
+                role="button"
+                tabIndex={0}
                 onClick={() => onSelect(comp.id)}
-                className="w-full text-left px-4 py-3 flex items-center justify-between group transition-all"
+                className="text-left mx-2 mb-2 px-3 py-2.5 rounded-xl flex items-center gap-3 group transition-all cursor-pointer"
                 style={{
                   background: isSelected
-                    ? `${theme.colors.primary}18`
+                    ? uiTheme.colors.surface
                     : "transparent",
-                  borderLeft: isSelected
-                    ? `3px solid ${theme.colors.primary}`
-                    : "3px solid transparent",
+                  border: isSelected
+                    ? `1px solid ${uiTheme.colors.primary}22`
+                    : "1px solid transparent",
                 }}
               >
-                <div className="min-w-0">
-                  {/* Mini slide preview */}
-                  <div
-                    className="w-full rounded-lg mb-2 overflow-hidden flex items-center justify-center"
-                    style={{
-                      height: "72px",
-                      background: isSelected
-                        ? `${theme.colors.primary}22`
-                        : theme.colors.surface,
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <span className="text-2xl">🎨</span>
-                  </div>
-
+                <div className="flex-1 min-w-0">
                   <p
                     className="text-sm font-semibold truncate"
                     style={{
                       color: isSelected
-                        ? theme.colors.text
-                        : theme.colors.textMuted,
+                        ? uiTheme.colors.text
+                        : uiTheme.colors.textMuted,
                     }}
                   >
                     {comp.title}
                   </p>
                   <p
-                    className="text-xs mt-0.5"
-                    style={{ color: theme.colors.textMuted }}
+                    className="text-[10px] mt-0.5 tracking-wider uppercase font-medium"
+                    style={{ color: uiTheme.colors.textMuted }}
                   >
-                    {comp.slides.length} slides · {comp.width}×{comp.height}
+                    {comp.slides.length} slides
                   </p>
                 </div>
-                <ChevronRight
-                  size={16}
-                  className="shrink-0 ml-2 transition-transform group-hover:translate-x-1"
-                  style={{
-                    color: isSelected
-                      ? theme.colors.primary
-                      : theme.colors.textMuted,
-                    opacity: isSelected ? 1 : 0,
-                  }}
-                />
-              </button>
+                
+                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={(e) => handleDeleteClick(e, comp.id)}
+                    className="p-1.5 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                    title="Delete carousel"
+                  >
+                    <Trash2
+                      size={14}
+                      style={{ color: uiTheme.colors.textMuted }}
+                    />
+                  </button>
+                  <ChevronRight
+                    size={14}
+                    className="shrink-0 transition-transform group-hover:translate-x-1"
+                    style={{
+                      color: isSelected
+                        ? uiTheme.colors.primary
+                        : uiTheme.colors.textMuted,
+                      opacity: isSelected ? 1 : 0,
+                    }}
+                  />
+                </div>
+              </div>
             );
           })
         )}
       </div>
 
-      {/* Footer */}
-      <div
-        className="px-5 py-4 text-xs"
-        style={{
-          color: theme.colors.textMuted,
-          borderTop: `1px solid ${theme.colors.surface}`,
-        }}
-      >
-        {compositions.length}{" "}
-        {compositions.length === 1 ? "composición" : "composiciones"}
-      </div>
     </aside>
+      
+      {/* ── Custom Delete Confirmation Modal ── */}
+      {confirmDeleteId && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-200"
+          style={{
+            background: `${uiTheme.colors.surface}E6`,
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden p-6 text-center"
+            style={{
+              background: uiTheme.colors.background,
+              border: `1px solid ${uiTheme.colors.primary}44`,
+            }}
+          >
+            <Trash2 size={40} className="mx-auto mb-4" style={{ color: uiTheme.colors.primary }} />
+            <h3 className="text-lg font-bold mb-2 tracking-tight" style={{ color: uiTheme.colors.text }}>Delete Carousel?</h3>
+            <p className="text-sm mb-6 leading-relaxed" style={{ color: uiTheme.colors.textMuted }}>
+              Are you completely sure? This will permanently delete the React code and metadata for this asset.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDeleteId(null)}
+                disabled={isDeleting}
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer disabled:opacity-50"
+                style={{ color: uiTheme.colors.text }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={executeDelete}
+                disabled={isDeleting}
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50 disabled:scale-100"
+                style={{ background: uiTheme.colors.primary, color: uiTheme.colors.surface }}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

@@ -6,10 +6,10 @@ import { CarouselComposition } from "@/types/carousel";
 // The dev server will hot-reload automatically.
 // ============================================================
 
-import exampleCarousel from "@/generated/carousels/example-carousel";
+import openmarkIntro from "@/generated/carousels/openmark-intro";
 
 const registry: CarouselComposition[] = [
-  exampleCarousel,
+  openmarkIntro,
   // ADD NEW CAROUSELS HERE ↓
   // import myCarousel from "@/generated/carousels/my-carousel";
   // myCarousel,

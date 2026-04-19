@@ -52,3 +52,10 @@ input[type="color"] {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* Hide Next.js 15 DevTools Overlay */
+nextjs-portal, #nextjs-portal {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

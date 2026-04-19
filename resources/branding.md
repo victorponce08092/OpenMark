@@ -1,31 +1,16 @@
-# Branding Context
+# Brand Identity
 
-> Este archivo define los parámetros visuales y de voz de la marca.
-> La IA lo usa para elegir paletas de color y tono de textos.
+## 1. Visual Aesthetics
+- **Vibe:** Cyber-minimalism. Monochromatic with aggressive high-contrast accents.
+- **Graphic Elements:** We prefer heavy geometric masks, extreme contrast, stark typography, and grid-based visual noise.
 
-## Colores de marca
-<!-- Hex codes preferidos -->
-- Primary: [PENDIENTE] <!-- Color principal/acento -->
-- Secondary: [PENDIENTE] <!-- Color secundario -->
-- Background: [PENDIENTE] <!-- Fondo oscuro o claro -->
-- Text: [PENDIENTE] <!-- Color de texto principal -->
+## 2. Default Typography preferences
+- **Headline Font:** `Space Grotesk` or `Inter`. Extreme heavy weights (800/900).
+- **Body Font:** `Inter` or `Geist`.
 
-## Tipografía preferida
-<!-- Opciones disponibles: Inter, Outfit, Poppins, Playfair Display, Montserrat, Raleway -->
-[PENDIENTE]
+## 3. Core Color Concept
+We operate fundamentally in Black & White, applying accent colors strictly for highlights inside the theme configuration.
 
-## Paleta de tema
-<!-- Opciones: dark-pro, light-clean, gradient-warm, ocean-depth, forest-calm, neon-bold -->
-[PENDIENTE]
-
-## Estilo visual
-<!-- Ejemplos: Minimalista, Vibrante, Elegante, Bold, Corporativo -->
-[PENDIENTE]
-
-## Logo / Marca de agua
-<!-- ¿Tienes logo? ¿Quieres agregarlo en slides? Si sí, ¿dónde? -->
-[PENDIENTE]
-
-## Emojis
-<!-- ¿Usar emojis en los carruseles? Sí / No / Ocasionalmente -->
-[PENDIENTE]
+- Base Background: Absolute Black or Pure White.
+- Text: High contrast (White on Black, Black on White).
+- Accent/Primary: Neon Purple, Acid Green, or Cyberpunk Pink depending on the chosen theme.

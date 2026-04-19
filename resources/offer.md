@@ -1,35 +1,13 @@
-# Offer Context
+# Active Offers
 
-> Este archivo describe lo que vendes y cómo posicionarlo en carruseles.
-> La IA lo usa para crear CTAs relevantes y narrativas de valor.
+## 1. Main Service / Product
+**OpenMark Studio (Open Source)**
 
-## Productos / Servicios principales
-<!-- Lista lo que ofreces -->
-1. [PENDIENTE]
-2. [PENDIENTE]
-3. [PENDIENTE]
+## 2. Default CTA (Call to Action)
+We want to drive developers and marketing agencies to clone the repository, test the codebase, and contribute to the project. 
 
-## Propuesta de valor única (UVP)
-<!-- ¿Por qué elegirte a ti y no a la competencia? -->
-[PENDIENTE]
+- **Primary Prompt Example:** "Clone OpenMark today. Link in bio."
+- **Alternative Prompt:** "Stop dragging layers. Start writing code. Try OpenMark."
 
-## Precio / Rango de precios
-<!-- Opcional, si quieres mencionarlo en slides -->
-[PENDIENTE]
-
-## CTA principal
-<!-- ¿Qué quieres que haga el usuario al final del carrusel? -->
-<!-- Ejemplos: "Escríbeme por DM", "Visita el link en bio", "Agenda una llamada gratis" -->
-[PENDIENTE]
-
-## Testimonios clave (opcional)
-<!-- 1-2 frases de clientes reales para usar en slides de prueba social -->
-[PENDIENTE]
-
-## Problema principal que resuelves
-<!-- El dolor más grande de tu cliente que tú solucionas -->
-[PENDIENTE]
-
-## Oferta de entrada / Lead magnet
-<!-- ¿Ofreces algo gratis para atraer? eBook, webinar, consulta, etc. -->
-[PENDIENTE]
+## 3. Lead Magnets or Bonuses
+Currently focusing completely on the open-source repository impact. No paid lead magnets or PDF downloads right now.

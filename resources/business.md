@@ -1,32 +1,17 @@
 # Business Context
 
-> Este archivo es leído por la IA antes de generar cualquier carrusel.
-> Si está vacío, la IA pedirá la información al usuario y lo completará.
+## 1. Brand Name
+**OpenMark**
 
-## Nombre del negocio
-<!-- Ejemplo: Marketing Pro Agency -->
-[PENDIENTE]
+## 2. What we do (Core Value Proposition)
+OpenMark is an open-source, code-first carousel generator. We transform standard marketing workflows by allowing creators to generate highly aesthetic, programmatic React carousels directly via AI input instead of traditional canvas dragging.
 
-## Descripción corta (1-2 frases)
-<!-- ¿Qué hace tu negocio? ¿A quién ayuda? -->
-[PENDIENTE]
+## 3. Target Audience (Avatar)
+- **Primary:** High-end marketing agencies, tech founders, and developer-advocates.
+- **Pain Points:** Wasting hours aligning layers in Figma, battling generic AI content, lacking programmatic scalability for social media operations.
+- **Goals:** They want to generate pixel-perfect, highly unique visual assets in seconds with absolute brand consistency.
 
-## Industria / Sector
-<!-- Ejemplo: Marketing Digital, Fitness, E-commerce, Coaching -->
-[PENDIENTE]
-
-## Audiencia objetivo (avatar)
-<!-- Describe tu cliente ideal: quién es, qué problema tiene, qué desea -->
-[PENDIENTE]
-
-## Tono de comunicación
-<!-- Ejemplos: Profesional, Cercano, Inspirador, Educativo, Directo -->
-[PENDIENTE]
-
-## Redes sociales principales
-<!-- Ejemplo: Instagram, LinkedIn, TikTok -->
-[PENDIENTE]
-
-## Tamaño de slide preferido
-<!-- Opciones: 1080x1080 (cuadrado), 1080x1350 (vertical), 1080x566 (horizontal) -->
-1080x1080
+## 4. Tone of Voice
+- **Vibe:** Direct, aggressive, highly technical yet accessible. We don't sugarcoat.
+- **Keywords:** Paradigm shift, elite, code-first, programmatic, absolute precision.
+- **Avoid:** Generic marketer jargon ("boost your ROI", "synergy").

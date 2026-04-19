@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Empty turbopack config to silence the webpack warning
+  devIndicators: {
+    appIsrStatus: false,
+    buildActivity: false,
+  },
   turbopack: {},
 };
 

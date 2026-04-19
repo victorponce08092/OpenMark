@@ -2,33 +2,62 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import { Theme, CarouselComposition } from "@/types/carousel";
-import { defaultTheme } from "@/lib/theme";
+import { defaultTheme, uiThemePresets, fallbackThemeConfig } from "@/lib/theme";
 import { getAllCompositions } from "@/registry";
 import CarouselList from "@/components/CarouselList";
 import SlideRenderer from "@/components/SlideRenderer";
 import ThemeEditor from "@/components/ThemeEditor";
 import ExportPanel from "@/components/ExportPanel";
-import { Layers, Palette, Download, Code2, Zap } from "lucide-react";
+import SocialPanel from "@/components/SocialPanel";
+import AboutModal from "@/components/AboutModal";
+import { Layers, Palette, Download, Code2, Zap, Moon, Sun, MessageSquare } from "lucide-react";
 
-type RightPanel = "theme" | "export";
+type RightPanel = "theme" | "export" | "social";
 
 export default function StudioPage() {
   const compositions = getAllCompositions();
-  const [selectedId, setSelectedId] = useState<string>(
-    compositions[0]?.id ?? ""
-  );
+  const initialCompId = compositions[0]?.id ?? "";
+  const [selectedId, setSelectedId] = useState<string>(initialCompId);
+  
+  // Set the initial theme from the first composition if available to prevent DOM errors
+  const initialComposition = compositions.find(c => c.id === initialCompId);
+  const initialTheme = initialComposition?.themeConfig?.themePresets?.[0]?.theme ?? defaultTheme;
+  
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [appThemeName, setAppThemeName] = useState<"claro" | "oscuro">("oscuro");
+  const uiTheme = uiThemePresets[appThemeName];
   const [rightPanel, setRightPanel] = useState<RightPanel>("theme");
+  const [showAbout, setShowAbout] = useState(false);
 
   const composition: CarouselComposition | undefined = compositions.find(
     (c) => c.id === selectedId
   );
 
-  // Reset slide when composition changes
+  // Reset slide and theme when composition changes
   useEffect(() => {
     setCurrentSlide(0);
-  }, [selectedId]);
+    if (composition) {
+      const config = composition.themeConfig ?? fallbackThemeConfig;
+      if (config.themePresets.length > 0) {
+        setTheme(config.themePresets[0].theme);
+      }
+    }
+  }, [selectedId, composition]);
+
+  // Handle localStorage theme
+  useEffect(() => {
+    const saved = localStorage.getItem("openmark_theme");
+    if (saved === "claro" || saved === "oscuro") {
+      setAppThemeName(saved);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = appThemeName === "claro" ? "oscuro" : "claro";
+    setAppThemeName(nextTheme);
+    localStorage.setItem("openmark_theme", nextTheme);
+  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -60,103 +89,89 @@ export default function StudioPage() {
 
   return (
     <div
-      className="flex flex-col h-screen overflow-hidden"
+      className="flex flex-col h-screen overflow-hidden transition-colors duration-300"
       style={{
-        background: theme.colors.background,
-        color: theme.colors.text,
-        fontFamily: theme.font,
+        background: uiTheme.colors.background,
+        color: uiTheme.colors.text,
+        fontFamily: uiTheme.font,
       }}
     >
       {/* ── Top Bar ─────────────────────────────────────────── */}
       <header
-        className="flex items-center justify-between px-6 h-14 shrink-0"
+        className="flex items-center justify-between px-6 h-14 shrink-0 relative"
         style={{
-          background: theme.colors.surface,
-          borderBottom: `1px solid ${theme.colors.background}`,
+          background: uiTheme.colors.surface,
+          borderBottom: `1px solid ${uiTheme.colors.background}`,
           zIndex: 50,
         }}
       >
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{
-              background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
-            }}
-          >
-            <Zap size={16} color="#fff" />
-          </div>
+        <div className="flex items-center gap-3 z-10">
           <span className="font-bold text-sm tracking-tight">
-            Carousel Studio
+            OpenMark
           </span>
           <span
             className="text-xs px-2 py-0.5 rounded-full font-mono"
             style={{
-              background: `${theme.colors.primary}22`,
-              color: theme.colors.primary,
+              background: `${uiTheme.colors.primary}22`,
+              color: uiTheme.colors.primary,
             }}
           >
-            code-first
+            open-code
           </span>
+          <button
+            onClick={() => setShowAbout(true)}
+            className="ml-2 text-xs font-semibold px-3 py-1 rounded-md transition-colors cursor-pointer hover:bg-black/5 dark:hover:bg-white/5"
+            style={{ color: uiTheme.colors.textMuted }}
+          >
+            About
+          </button>
         </div>
 
-        {/* Composition info */}
+        {/* Composition info (Absolutely Centered) */}
         {composition && (
-          <div className="flex items-center gap-4">
-            <div className="text-center hidden md:block">
-              <p
-                className="text-xs font-semibold"
-                style={{ color: theme.colors.text }}
-              >
-                {composition.title}
-              </p>
-              <p className="text-xs" style={{ color: theme.colors.textMuted }}>
-                {composition.width} × {composition.height}
-              </p>
-            </div>
-
-            {/* Slide pills */}
-            <div className="flex gap-1">
-              {composition.slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentSlide(i)}
-                  className="rounded transition-all"
-                  style={{
-                    width: i === currentSlide ? "20px" : "8px",
-                    height: "8px",
-                    background:
-                      i === currentSlide
-                        ? theme.colors.primary
-                        : `${theme.colors.primary}44`,
-                  }}
-                />
-              ))}
-            </div>
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:block text-center pointer-events-none">
+            <p
+              className="text-xs font-semibold"
+              style={{ color: uiTheme.colors.text }}
+            >
+              {composition.title}
+            </p>
+            <p className="text-[10px] mt-0.5" style={{ color: uiTheme.colors.textMuted }}>
+              {composition.width} × {composition.height}px
+            </p>
           </div>
         )}
 
-        {/* Right panel tabs */}
         <div
-          className="flex items-center gap-1 p-1 rounded-lg"
-          style={{ background: theme.colors.background }}
+          className="flex items-center gap-1 p-1 rounded-lg mr-2 z-10"
+          style={{ background: uiTheme.colors.background }}
         >
+          <button
+            onClick={toggleTheme}
+            className="flex items-center justify-center w-8 h-8 rounded-md transition-all mr-2 cursor-pointer"
+            style={{ color: uiTheme.colors.textMuted }}
+            title="Toggle App Theme"
+          >
+            {appThemeName === "claro" ? <Moon size={16} /> : <Sun size={16} />}
+          </button>
           {(
             [
-              { id: "theme" as RightPanel, icon: Palette, label: "Tema" },
-              { id: "export" as RightPanel, icon: Download, label: "Exportar" },
+              { id: "theme" as RightPanel, icon: Palette, label: "Theme" },
+              { id: "export" as RightPanel, icon: Download, label: "Export" },
+              { id: "social" as RightPanel, icon: MessageSquare, label: "Social" },
             ] as const
           ).map(({ id, icon: Icon, label }) => (
             <button
               key={id}
               onClick={() => setRightPanel(id)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer"
               style={{
                 background:
-                  rightPanel === id ? theme.colors.surface : "transparent",
+                  rightPanel === id ? uiTheme.colors.surface : "transparent",
                 color:
                   rightPanel === id
-                    ? theme.colors.text
-                    : theme.colors.textMuted,
+                    ? uiTheme.colors.text
+                    : uiTheme.colors.textMuted,
               }}
             >
               <Icon size={14} />
@@ -172,14 +187,14 @@ export default function StudioPage() {
         <aside
           className="w-56 shrink-0 overflow-hidden flex flex-col"
           style={{
-            background: theme.colors.surface,
-            borderRight: `1px solid ${theme.colors.background}`,
+            background: uiTheme.colors.surface,
+            borderRight: `1px solid ${uiTheme.colors.background}`,
           }}
         >
           <CarouselList
             compositions={compositions}
             selectedId={selectedId}
-            theme={theme}
+            uiTheme={uiTheme}
             onSelect={handleSelect}
           />
         </aside>
@@ -187,67 +202,80 @@ export default function StudioPage() {
         {/* Center: Slide preview */}
         <main
           className="flex-1 flex items-center justify-center overflow-hidden relative"
-          style={{ background: theme.colors.background }}
+          style={{ background: uiTheme.colors.background }}
         >
           {/* Grid background */}
           <div
-            className="absolute inset-0 opacity-[0.04]"
+            className="absolute inset-0 opacity-[0.04] pointer-events-none"
             style={{
               backgroundImage: `
-                linear-gradient(${theme.colors.text} 1px, transparent 1px),
-                linear-gradient(90deg, ${theme.colors.text} 1px, transparent 1px)
+                linear-gradient(${uiTheme.colors.text} 1px, transparent 1px),
+                linear-gradient(90deg, ${uiTheme.colors.text} 1px, transparent 1px)
               `,
               backgroundSize: "40px 40px",
+              zIndex: 0,
             }}
           />
 
-          {composition ? (
-            <SlideRenderer
-              composition={composition}
-              currentSlide={currentSlide}
-              theme={theme}
-              onPrev={handlePrev}
-              onNext={handleNext}
-            />
-          ) : (
-            <div className="text-center">
-              <Code2
-                size={48}
-                className="mx-auto mb-4"
-                style={{ color: theme.colors.primary, opacity: 0.5 }}
+          <div className="relative z-10 w-full h-full flex items-center justify-center">
+            {composition ? (
+              <SlideRenderer
+                composition={composition}
+                currentSlide={currentSlide}
+                theme={theme}
+                uiTheme={uiTheme}
+                onPrev={handlePrev}
+                onNext={handleNext}
               />
-              <p style={{ color: theme.colors.textMuted }}>
-                No hay composiciones disponibles.
-              </p>
-              <p
-                className="text-sm mt-2"
-                style={{ color: theme.colors.textMuted }}
-              >
-                Genera un carrusel con la skill y aparecerá aquí.
-              </p>
-            </div>
-          )}
+            ) : (
+              <div className="text-center">
+                <Code2
+                  size={48}
+                  className="mx-auto mb-4"
+                  style={{ color: uiTheme.colors.primary, opacity: 0.5 }}
+                />
+                <p style={{ color: uiTheme.colors.textMuted }}>
+                  No compositions available.
+                </p>
+                <p
+                  className="text-sm mt-2"
+                  style={{ color: uiTheme.colors.textMuted }}
+                >
+                  Generate a carousel with the designated skill, and it will appear here.
+                </p>
+              </div>
+            )}
+          </div>
         </main>
 
         {/* Right sidebar: Theme / Export */}
         <aside
           className="w-64 shrink-0 overflow-hidden flex flex-col"
           style={{
-            background: theme.colors.surface,
-            borderLeft: `1px solid ${theme.colors.background}`,
+            background: uiTheme.colors.surface,
+            borderLeft: `1px solid ${uiTheme.colors.background}`,
           }}
         >
-          {rightPanel === "theme" ? (
-            <ThemeEditor theme={theme} onChange={setTheme} />
-          ) : (
-            composition && (
-              <ExportPanel
-                composition={composition}
-                currentSlide={currentSlide}
-                theme={theme}
-              />
-            )
-          )}
+          {rightPanel === "theme" && composition ? (
+            <ThemeEditor 
+              theme={theme} 
+              uiTheme={uiTheme} 
+              themeConfig={composition.themeConfig ?? fallbackThemeConfig}
+              onChange={setTheme} 
+            />
+          ) : rightPanel === "export" && composition ? (
+            <ExportPanel
+              composition={composition}
+              currentSlide={currentSlide}
+              setCurrentSlide={setCurrentSlide}
+              uiTheme={uiTheme}
+            />
+          ) : rightPanel === "social" && composition ? (
+            <SocialPanel
+              composition={composition}
+              uiTheme={uiTheme}
+            />
+          ) : null}
         </aside>
       </div>
 
@@ -255,23 +283,26 @@ export default function StudioPage() {
       <footer
         className="h-7 flex items-center px-4 gap-6 text-xs shrink-0"
         style={{
-          background: theme.colors.surface,
-          borderTop: `1px solid ${theme.colors.background}`,
-          color: theme.colors.textMuted,
+          background: uiTheme.colors.surface,
+          borderTop: `1px solid ${uiTheme.colors.background}`,
+          color: uiTheme.colors.textMuted,
         }}
       >
         <span className="flex items-center gap-1.5">
           <Layers size={11} />
           {compositions.length}{" "}
-          {compositions.length === 1 ? "composición" : "composiciones"}
+          {compositions.length === 1 ? "composition" : "compositions"}
         </span>
         {composition && (
           <span>
             Slide {currentSlide + 1} / {composition.slides.length}
           </span>
         )}
-        <span className="ml-auto">← → para navegar</span>
+        <span className="ml-auto hidden sm:inline">Use ← → to navigate · Ctrl+S to export</span>
       </footer>
+
+      {/* ── Modals ─────────────────────────────────────────────── */}
+      {showAbout && <AboutModal onClose={() => setShowAbout(false)} uiTheme={uiTheme} />}
     </div>
   );
 }
