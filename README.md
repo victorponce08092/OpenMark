@@ -92,12 +92,10 @@ OpenMark is designed to be paired with advanced coding copilots (such as Cursor,
 
 ### Step 0: Set Up Your Brand Identity
 
-Before running any prompts, navigate to the `/resources` folder and customize the template files with your actual business data:
-- `business.md`: Explain what your company does and who your target audience is.
-- `branding.md`: Provide your specific hex color codes, typography preferences, and brand voice.
-- `offer.md`: Describe the exact product, lead magnet, or service you are promoting.
-
-*(The AI agent will continually scan these files as its "memory" whenever you ask it to build something).*
+To enable the AI to generate carousels that truly represent your business, the system uses the `/resources` folder as its "context memory":
+- **Total Freedom:** You can safely delete or modify the default example `.md` files.
+- **Upload Your Own Data:** To teach the AI about your business, simply upload `.md` files to this folder with details about your value proposition, visual identity (colors, fonts), and target audience.
+- **Smart Generation:** When asking the AI to create new carousels, it will automatically scan these files to ensure the content and design are perfectly aligned with your brand.
 
 ### 1. Establish Context
 
