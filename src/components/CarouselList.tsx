@@ -3,7 +3,7 @@
 import React from "react";
 import { CarouselComposition } from "@/types/carousel";
 import { Theme } from "@/types/carousel";
-import { Layers, ChevronRight, Trash2 } from "lucide-react";
+import { Layers, Copy, Trash2, Check } from "lucide-react";
 
 interface CarouselListProps {
   compositions: CarouselComposition[];
@@ -20,6 +20,18 @@ export default function CarouselList({
 }: CarouselListProps) {
   const [confirmDeleteId, setConfirmDeleteId] = React.useState<string | null>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
+
+  const handleCopyClick = async (e: React.MouseEvent, text: string, id: string) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -125,16 +137,23 @@ export default function CarouselList({
                       style={{ color: uiTheme.colors.textMuted }}
                     />
                   </button>
-                  <ChevronRight
-                    size={14}
-                    className="shrink-0 transition-transform group-hover:translate-x-1"
-                    style={{
-                      color: isSelected
-                        ? uiTheme.colors.primary
-                        : uiTheme.colors.textMuted,
-                      opacity: isSelected ? 1 : 0,
-                    }}
-                  />
+                  <button
+                    onClick={(e) => handleCopyClick(e, comp.id, comp.id)}
+                    className="p-1.5 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                    title="Copy name"
+                  >
+                    {copiedId === comp.id ? (
+                      <Check
+                        size={14}
+                        style={{ color: uiTheme.colors.primary }}
+                      />
+                    ) : (
+                      <Copy
+                        size={14}
+                        style={{ color: uiTheme.colors.textMuted }}
+                      />
+                    )}
+                  </button>
                 </div>
               </div>
             );
