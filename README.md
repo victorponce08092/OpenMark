@@ -1,3 +1,14 @@
+```text
+   ____                    __  __               _    
+  / __ \                  |  \/  |             | |   
+ | |  | | _ __   ___  _ __| \  / |  __ _  _ __ | | __
+ | |  | || '_ \ / _ \| '__| |\/| | / _` || '__|| |/ /
+ | |__| || |_) |  __/| |  | |  | || (_| || |   |   < 
+  \____/ | .__/ \___||_|  |_|  |_| \__,_||_|   |_|\_\
+         | |                                         
+         |_|                                         
+```
+
 # OpenMark — Code-First Carousel Studio
 
 > A complete ecosystem to generate marketing carousels as pure React code and render them in a real-time, programmatic web studio.
@@ -80,6 +91,15 @@ open http://localhost:3000
 ## How to Work with AI Agents
 
 OpenMark is designed to be paired with advanced coding copilots (such as Cursor, Windsurf, Claude Code, or Antigravity).
+
+### Step 0: Set Up Your Brand Identity
+
+Before running any prompts, navigate to the `/resources` folder and customize the template files with your actual business data:
+- `business.md`: Explain what your company does and who your target audience is.
+- `branding.md`: Provide your specific hex color codes, typography preferences, and brand voice.
+- `offer.md`: Describe the exact product, lead magnet, or service you are promoting.
+
+*(The AI agent will continually scan these files as its "memory" whenever you ask it to build something).*
 
 ### 1. Establish Context
 
