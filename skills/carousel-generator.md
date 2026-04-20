@@ -15,12 +15,16 @@ You do NOT generate images. You generate **React components** that our Next.js e
 
 ## 2. Context Verification (CRITICAL)
 
-Before writing *a single line of code*, you **MUST** read:
-1. `/resources/business.md`
-2. `/resources/branding.md`
-3. `/resources/offer.md`
+Before writing *a single line of code*, you **MUST** read ALL files in the `/resources/` folder.
 
-### If these files DO NOT EXIST or show `[PENDING]`:
+### The Knowledge Source (Universal Context)
+The `/resources/` folder is your **Absolute Source of Truth**. This is a **universal repository** for all knowledge relevant to the brand, business, and offers.
+
+**EVERYTHING** inside this folder—regardless of its nature, format, or content—is critical information. There are no "ignored" files or unimportant data. If a resource exists in this folder, it is because it contains essential knowledge that MUST influence your design, marketing strategy, and copywriting.
+
+**YOU MUST read, analyze, and internalize the totality of the information provided in this folder before writing a single line of code.**
+
+### If core files (`business.md`, `branding.md`, `offer.md`) DO NOT EXIST:
 Stop and ask the user these exact questions to establish their brand identity:
 
 **Business Profile:**
@@ -171,6 +175,8 @@ const composition: CarouselComposition = {
       { key: "textMuted", label: "Low Contrast Text" }
     ],
     themePresets: [
+      // YOU MUST PROVIDE EXACTLY 6 HIGH-END, DIVERSE COLOR PALETTES (palette-1 to palette-6)
+      // If the user didn't specify exactly which colors to use, you MUST generate 6 unique options.
       {
         id: "palette-1",
         label: "Brand Stealth",
@@ -180,7 +186,7 @@ const composition: CarouselComposition = {
           borderRadius: "0px"
         }
       },
-      // YOU MUST PROVIDE EXACTLY 6 HIGH-END, DIVERSE COLOR PALETTES
+      // palette-2, palette-3, palette-4, palette-5, palette-6...
     ]
   },
   socialCopy: {
@@ -214,7 +220,7 @@ Before concluding your task, verify:
 - [ ] At least 1 slide uses massive typography?
 - [ ] At least 1 slide uses asymmetrical split-designs / geometric shapes?
 - [ ] Every slide has distinct layouts, alignments, or visual hierarchies?
-- [ ] All 6 font alternatives AND all 6 palette presets included?
+- [ ] All 6 font alternatives AND EXACTLY 6 diverse palette presets included? (MANDATORY)
 - [ ] Registered the new carousel in `src/registry.ts`?
 - [ ] Provided a highly persuasive `socialCopy` object?
 
