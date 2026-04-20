@@ -9,8 +9,7 @@ import { CarouselComposition } from "@/types/carousel";
 import openmarkIntro from "@/generated/carousels/openmark-intro";
 
 const registry: CarouselComposition[] = [
-  openmarkIntro,
-  // ADD NEW CAROUSELS HERE ↓
+  openmarkIntro,  // ADD NEW CAROUSELS HERE ↓
   // import myCarousel from "@/generated/carousels/my-carousel";
   // myCarousel,
 ];

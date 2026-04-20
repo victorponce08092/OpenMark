@@ -35,20 +35,21 @@ export default function ExportPanel({
     }
 
     // Dynamic import to avoid SSR issues
-    const html2canvas = (await import("html2canvas")).default;
-    const canvas = await html2canvas(el, {
+    const htmlToImage = await import("html-to-image");
+    const options = {
       width: composition.width,
       height: composition.height,
-      scale: 1,
-      useCORS: true,
-      backgroundColor: null,
-      onclone: (clonedDoc) => {
-        const clonedEl = clonedDoc.getElementById("slide-canvas");
-        if (clonedEl) clonedEl.style.transform = "none";
-      },
-    });
+      canvasWidth: composition.width,
+      canvasHeight: composition.height,
+      pixelRatio: 1,
+      style: { transform: "none" },
+    };
 
-    return canvas.toDataURL(`image/${format}`, quality);
+    if (format === "png") {
+      return htmlToImage.toPng(el, options);
+    } else {
+      return htmlToImage.toJpeg(el, { ...options, quality });
+    }
   };
 
   const downloadDataUrl = (url: string, fileName: string) => {
@@ -104,7 +105,7 @@ export default function ExportPanel({
     const originalSlide = currentSlide;
     try {
       const JSZip = (await import("jszip")).default;
-      const html2canvas = (await import("html2canvas")).default;
+      const htmlToImage = await import("html-to-image");
       const zip = new JSZip();
       const folder = zip.folder(composition.id)!;
 
@@ -118,21 +119,18 @@ export default function ExportPanel({
         const el = document.getElementById("slide-canvas");
         if (!el) continue;
 
-        const canvas = await html2canvas(el, {
+        const blob = await htmlToImage.toBlob(el, {
           width: composition.width,
           height: composition.height,
-          scale: 1,
-          useCORS: true,
-          backgroundColor: null,
-          onclone: (clonedDoc) => {
-            const clonedEl = clonedDoc.getElementById("slide-canvas");
-            if (clonedEl) clonedEl.style.transform = "none";
-          },
+          canvasWidth: composition.width,
+          canvasHeight: composition.height,
+          pixelRatio: 1,
+          style: { transform: "none" }
         });
-        const blob = await new Promise<Blob>((res) =>
-          canvas.toBlob((b) => res(b!), "image/png")
-        );
-        folder.file(`slide-${i + 1}.png`, blob);
+        
+        if (blob) {
+          folder.file(`slide-${i + 1}.png`, blob);
+        }
       }
 
       // Restore to original slide
